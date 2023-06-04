@@ -1,5 +1,6 @@
-package kodlama.io.ecommerce.business.dto.responses.get;
+package kodlama.io.ecommerce.entities;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,12 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetAllProductsResponse {
+@Entity
+@Table(name = "categories")
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    private int quantity;
-    private double price;
-    private String description;
 
 }

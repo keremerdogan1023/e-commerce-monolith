@@ -11,8 +11,8 @@
     <groupId>kodlama.io</groupId>
     <artifactId>e-commerce</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springbootodev</name>
-    <description>springbootodev</description>
+    <name>e-commorce-monolith</name>
+    <description>e-commorce-monolith</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -54,6 +54,11 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>3.1.1</version>
         </dependency>
     </dependencies>
 

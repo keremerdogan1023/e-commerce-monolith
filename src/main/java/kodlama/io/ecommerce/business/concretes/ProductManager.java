@@ -1,64 +1,73 @@
 package kodlama.io.ecommerce.business.concretes;
 
 import kodlama.io.ecommerce.business.abstracts.ProductService;
+import kodlama.io.ecommerce.business.dto.requests.create.CreateProductRequest;
+import kodlama.io.ecommerce.business.dto.requests.update.UpdateProductRequest;
+import kodlama.io.ecommerce.business.dto.responses.create.CreateProductResponse;
+import kodlama.io.ecommerce.business.dto.responses.get.GetAllProductsResponse;
+import kodlama.io.ecommerce.business.dto.responses.get.GetProductResponse;
+import kodlama.io.ecommerce.business.dto.responses.update.UpdateProductResponse;
+import kodlama.io.ecommerce.business.rules.ProductBusinessRules;
 import kodlama.io.ecommerce.entities.Product;
 import kodlama.io.ecommerce.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class ProductManager implements ProductService {
     private final ProductRepository repository;
+    private final ModelMapper mapper;
+    private final ProductBusinessRules rules;
 
     @Override
-    public List<Product> getAll() {
-        return repository.findAll();
+    public List<GetAllProductsResponse> getAll() {
+        List<Product> products = repository.findAll();
+        List<GetAllProductsResponse> response = products
+                .stream()
+                .map(product -> mapper.map(product, GetAllProductsResponse.class))
+                .toList();
+
+        return  response;
     }
 
     @Override
-    public Product getById(int id) {
-        return repository.findById(id).orElseThrow();
+    public GetProductResponse getById(UUID id) {
+        Product product = repository.findById(id).orElseThrow();
+        GetProductResponse response = mapper.map(product,GetProductResponse.class);
+        return response;
     }
 
     @Override
-    public Product add(Product product) {
-        validateProduct(product);
-        return repository.save(product);
+    public CreateProductResponse add(CreateProductRequest request) {
+        Product product = mapper.map(request, Product.class);
+        product.setId(UUID.randomUUID());
+        repository.save(product);
+        CreateProductResponse response = mapper.map(product, CreateProductResponse.class);
+        return response;
 
 
     }
 
     @Override
-    public Product update(int id, Product product) {
-        validateProduct(product);
+    public UpdateProductResponse update(UUID id, UpdateProductRequest request) {
+        rules.checkIfProductExists(id);
+        Product product = mapper.map(request, Product.class);
         product.setId(id);
-        return repository.save(product);
+        repository.save(product);
+        UpdateProductResponse response = mapper.map(product, UpdateProductResponse.class);
+        return response;
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(UUID id) {
+        rules.checkIfProductExists(id);
         repository.deleteById(id);
+    }
 
-    }
-    //Business Rules
-
-    private void validateProduct(Product product){
-        checkIfQuantityValid(product);
-        checkIfPriceValid(product);
-        checkIfDescriptionLengthValid(product);
-    }
-    private void checkIfPriceValid(Product product){
-        if (product.getPrice() <= 0) throw new IllegalArgumentException("Price cannot be less than or equal to zero");
-    }
-    private void checkIfQuantityValid(Product product){
-        if (product.getQuantity() < 0) throw new IllegalArgumentException("Quantity cannot be less than zero");
-    }
-    private void checkIfDescriptionLengthValid(Product product){
-        if (product.getDescription().length() < 10 || product.getDescription().length() > 50)
-            throw new IllegalArgumentException("Description length must be between 10 and 50 characters.");
-    }
 
 }

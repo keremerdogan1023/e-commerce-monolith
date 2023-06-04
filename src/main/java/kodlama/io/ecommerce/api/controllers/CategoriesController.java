@@ -1,13 +1,15 @@
 package kodlama.io.ecommerce.api.controllers;
 
+import kodlama.io.ecommerce.business.abstracts.CategoryService;
 import kodlama.io.ecommerce.business.abstracts.ProductService;
+import kodlama.io.ecommerce.business.dto.requests.create.CreateCategoryRequest;
 import kodlama.io.ecommerce.business.dto.requests.create.CreateProductRequest;
+import kodlama.io.ecommerce.business.dto.requests.update.UpdateCategoryRequest;
 import kodlama.io.ecommerce.business.dto.requests.update.UpdateProductRequest;
-import kodlama.io.ecommerce.business.dto.responses.create.CreateProductResponse;
+import kodlama.io.ecommerce.business.dto.responses.create.*;
 import kodlama.io.ecommerce.business.dto.responses.get.GetAllProductsResponse;
 import kodlama.io.ecommerce.business.dto.responses.get.GetProductResponse;
 import kodlama.io.ecommerce.business.dto.responses.update.UpdateProductResponse;
-import kodlama.io.ecommerce.entities.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,26 +19,26 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/products")
-public class ProductsController {
+@RequestMapping("/api/categories")
+public class CategoriesController {
 
-    private final ProductService service;
+    private final CategoryService service;
 
     @GetMapping
-    public List<GetAllProductsResponse> getAll(){
+    public List<GetAllCategoriesResponse> getAll(){
         return service.getAll();
     }
     @GetMapping("/{id}")
-    public GetProductResponse getById(@PathVariable UUID id){
+    public GetCategoryResponse getById(@PathVariable UUID id){
         return service.getById(id);
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateProductResponse add(@RequestBody CreateProductRequest request){
+    public CreateCategoryResponse add(@RequestBody CreateCategoryRequest request){
         return service.add(request);
     }
     @PutMapping("/{id}")
-    public UpdateProductResponse update(@PathVariable UUID id, @RequestBody UpdateProductRequest request){
+    public UpdateCategoryResponse update(@PathVariable UUID id, @RequestBody UpdateCategoryRequest request){
         return service.update(id,request);
     }
     @DeleteMapping("{id}")
