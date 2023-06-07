@@ -23,8 +23,8 @@ public class ProductsController {
     private final ProductService service;
 
     @GetMapping
-    public List<GetAllProductsResponse> getAll(){
-        return service.getAll();
+    public List<GetAllProductsResponse> getAll(@RequestParam(defaultValue = "true") boolean IsActive){
+        return service.getAll(IsActive);
     }
     @GetMapping("/{id}")
     public GetProductResponse getById(@PathVariable UUID id){

@@ -9,6 +9,7 @@ import kodlama.io.ecommerce.business.dto.responses.get.GetProductResponse;
 import kodlama.io.ecommerce.business.dto.responses.update.UpdateProductResponse;
 import kodlama.io.ecommerce.business.rules.ProductBusinessRules;
 import kodlama.io.ecommerce.entities.Product;
+import kodlama.io.ecommerce.entities.enums.State;
 import kodlama.io.ecommerce.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -25,8 +26,8 @@ public class ProductManager implements ProductService {
     private final ProductBusinessRules rules;
 
     @Override
-    public List<GetAllProductsResponse> getAll() {
-        List<Product> products = repository.findAll();
+    public List<GetAllProductsResponse> getAll(boolean IsActive) {
+        List<Product> products = filterProductsByActiveState(IsActive);
         List<GetAllProductsResponse> response = products
                 .stream()
                 .map(product -> mapper.map(product, GetAllProductsResponse.class))
@@ -46,6 +47,7 @@ public class ProductManager implements ProductService {
     public CreateProductResponse add(CreateProductRequest request) {
         Product product = mapper.map(request, Product.class);
         product.setId(UUID.randomUUID());
+        product.setState(State.Active);
         repository.save(product);
         CreateProductResponse response = mapper.map(product, CreateProductResponse.class);
         return response;
@@ -67,6 +69,13 @@ public class ProductManager implements ProductService {
     public void delete(UUID id) {
         rules.checkIfProductExists(id);
         repository.deleteById(id);
+    }
+
+    private List<Product> filterProductsByActiveState(boolean IsActive){
+        if (IsActive){
+            return repository.findAll();
+        }
+        return repository.findAllByStateIsNot(State.Active);
     }
 
 

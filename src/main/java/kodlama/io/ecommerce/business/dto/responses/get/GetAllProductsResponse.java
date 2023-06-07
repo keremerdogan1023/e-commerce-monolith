@@ -1,5 +1,6 @@
 package kodlama.io.ecommerce.business.dto.responses.get;
 
+import kodlama.io.ecommerce.entities.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,5 @@ public class GetAllProductsResponse {
     private int quantity;
     private double price;
     private String description;
-
+    private State state;
 }

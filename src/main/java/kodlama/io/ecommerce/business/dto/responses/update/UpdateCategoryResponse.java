@@ -1,6 +1,5 @@
 package kodlama.io.ecommerce.business.dto.responses.update;
 
-import kodlama.io.ecommerce.entities.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,12 +11,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateProductResponse {
+public class UpdateCategoryResponse {
     private UUID id;
     private String name;
-    private int quantity;
-    private double price;
-    private String description;
-    private State state;
-
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProductService {
-    List<GetAllProductsResponse> getAll();
+    List<GetAllProductsResponse> getAll(boolean IsActive);
     GetProductResponse getById(UUID id);
     CreateProductResponse add(CreateProductRequest request);
     UpdateProductResponse update(UUID id, UpdateProductRequest request);

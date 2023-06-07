@@ -1,4 +1,4 @@
-package kodlama.io.ecommerce.business.dto.responses.create;
+package kodlama.io.ecommerce.business.dto.responses.get;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

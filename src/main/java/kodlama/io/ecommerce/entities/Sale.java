@@ -1,12 +1,13 @@
 package kodlama.io.ecommerce.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import kodlama.io.ecommerce.entities.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,15 +16,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "sales")
+public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String name;
+    private double price;
+    private LocalDateTime saleDate;
+    private State state;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "productCategories")
-    private List<Product> products;
-
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }
